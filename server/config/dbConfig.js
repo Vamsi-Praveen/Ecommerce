@@ -1,5 +1,5 @@
 import mongoose from "mongoose";
-import logger from "../utils/logger";
+import logger from "../utils/logger.js";
 
 const connectToDb = async () => {
     const mongo_uri = process.env.MONGO_DB_URI;
