@@ -204,3 +204,75 @@ export const changePassword = expressAsyncHandler(
         });
     }
 );
+
+export const addItemToCart = expressAsyncHandler(
+    async (req, res) => {
+        const { product } = req.body;
+        const { id } = req.user;
+        if (!id) {
+            res.status(400);
+            throw new Error("User Id required");
+        }
+        if (!product) {
+            res.status(400);
+            throw new Error("Product is required");
+        }
+        const user = await User.findById(id);
+        if (!user) {
+            res.status(404);
+            throw new Error("User not found");
+        }
+        const cartItems = [...user.cartItems, product];
+        const updatedUser = await User.findByIdAndUpdate(id, { cartItems }, { new: true });
+        if (!updatedUser) {
+            res.status(500);
+            throw new Error('Added to Cart failed');
+        }
+        res.status(200).json({
+            result: {
+                data: {
+                    email: updatedUser.email,
+                    added: true,
+                    cartItems: updatedUser.cartItems
+                }
+            }
+        });
+        return;
+    }
+)
+
+export const deleteCartItem = expressAsyncHandler(
+    async (req, res) => {
+        const { productId } = req.params;
+        if (!productId) {
+            res.status(400);
+            throw new Error('Product Id is required');
+        }
+        const { id } = req.user;
+        if (!id) {
+            res.status(400);
+            throw new Error("User Id required");
+        }
+        const user = await User.findById(id);
+        if (!user) {
+            res.status(404);
+            throw new Error("User not found");
+        }
+        const cartItems = user?.cartItems.filter((product) => product.id != productId);
+        const updatedUser = await User.findByIdAndUpdate(id, { cartItems }, { new: true });
+        if (!updatedUser) {
+            res.status(500);
+            throw new Error('Failed to delete cart item.');
+        }
+        res.status(200).json({
+            result: {
+                data: {
+                    email: updatedUser.email,
+                    deleted: true,
+                    cartItems: updatedUser.cartItems
+                }
+            }
+        });
+        return;
+    }
+)
