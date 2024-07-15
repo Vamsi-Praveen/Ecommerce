@@ -22,7 +22,7 @@ const Header = () => {
     ]
 
     return (
-        <div className='bg-white py-3 pt-5 flex justify-center items-baseline'>
+        <div className='bg-white py-4 pt-6 flex justify-center items-baseline border-b border-slate-200'>
             <div className='w-full flex items-center justify-around'>
                 <h1 className='font-semibold tracking-tight text-2xl'><span className='text-[#DB4444]'>X</span>clusive.</h1>
                 <div className='flex items-center gap-10'>
