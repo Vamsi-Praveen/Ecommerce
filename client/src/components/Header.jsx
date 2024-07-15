@@ -1,5 +1,7 @@
 import { icons } from '@/assets'
 import { Link } from 'react-router-dom'
+import { MenuIcon, X } from "lucide-react"
+import { useState } from 'react'
 
 const Header = () => {
     const navLinks = [
@@ -21,11 +23,44 @@ const Header = () => {
         }
     ]
 
+    const [isSideOpen, setIsSideOpen] = useState(false)
+
     return (
         <div className='bg-white py-4 pt-6 flex justify-center items-baseline border-b border-slate-200'>
-            <div className='w-full flex items-center justify-around'>
+            <div className='w-full flex items-center justify-between md:justify-around mx-5 md:mx-0'>
                 <h1 className='font-semibold tracking-tight text-2xl'><span className='text-[#DB4444]'>X</span>clusive.</h1>
-                <div className='flex items-center gap-10'>
+                <div className='md:hidden'>
+                    <div className='flex items-center gap-4'>
+                        <div className='cursor-pointer bg-primaryRed rounded-full p-1'>
+                            <svg width="20" height="20" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M24 27V24.3333C24 22.9188 23.5224 21.5623 22.6722 20.5621C21.8221 19.5619 20.669 19 19.4667 19H11.5333C10.331 19 9.17795 19.5619 8.32778 20.5621C7.47762 21.5623 7 22.9188 7 24.3333V27" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+                                <path d="M16.5 14C18.9853 14 21 11.9853 21 9.5C21 7.01472 18.9853 5 16.5 5C14.0147 5 12 7.01472 12 9.5C12 11.9853 14.0147 14 16.5 14Z" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+                            </svg>
+
+                        </div>
+                        <div onClick={() => setIsSideOpen(true)}>
+                            <MenuIcon />
+                        </div>
+                    </div>
+                </div>
+                {/* mobile sidebar */}
+                {isSideOpen && (
+                    <div className='fixed inset-0 bg-black bg-opacity-50 z-50 flex justify-end'>
+                        <div className='bg-white w-2/3 max-w-xs h-full p-6'>
+                            <div className='flex justify-end'>
+                                <X onClick={() => setIsSideOpen(false)} className="cursor-pointer" />
+                            </div>
+                            <ul className='list-none flex flex-col gap-4 mt-4'>
+                                {navLinks.map((link) => (
+                                    <li key={link.href} className='font-medium text-[#7D8184] hover:text-black transition text-[18px]'>
+                                        <Link to={link.href} onClick={() => setIsSideOpen(false)}>{link.link}</Link>
+                                    </li>
+                                ))}
+                            </ul>
+                        </div>
+                    </div>
+                )}
+                <div className='hidden md:flex items-center gap-10'>
                     <div>
                         <ul className='list-none flex items-center gap-8'>
                             {
