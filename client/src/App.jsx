@@ -1,8 +1,13 @@
 import React from 'react'
-import { Button } from './components/ui/button'
+import HeaderBanner from './components/HeaderBanner'
+import Header from './components/Header'
+
 const App = () => {
   return (
-    <Button>Welcome</Button>
+   <div className='antialiased'>
+     <HeaderBanner/>
+     <Header/>
+   </div>
   )
 }
 
