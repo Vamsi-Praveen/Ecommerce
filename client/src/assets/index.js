@@ -16,6 +16,10 @@ import moneybag from './icons/Icon-Moneybag.svg';
 import shop from './icons/Icon-Shop.svg';
 import send from './icons/icon-send.svg';
 import star from './icons/Icon-Reviews.svg';
+import facebook from './icons/Icon-Facebook.svg';
+import twitter from './icons/Icon-Twitter.svg';
+import linkedin from './icons/Icon-Linkedin.svg';
+import instagram from './icons/icon-instagram.svg';
 
 export const icons = {
     search,
@@ -36,4 +40,8 @@ export const icons = {
     shop,
     send,
     star,
+    facebook,
+    twitter,
+    instagram,
+    linkedin
 };
