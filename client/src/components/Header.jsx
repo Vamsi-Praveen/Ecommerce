@@ -2,6 +2,7 @@ import { icons } from '@/assets'
 import { Link } from 'react-router-dom'
 import { MenuIcon, X } from "lucide-react"
 import { useState } from 'react'
+import { AnimatePresence, motion } from "framer-motion"
 
 const Header = () => {
     const navLinks = [
@@ -26,9 +27,11 @@ const Header = () => {
     const [isSideOpen, setIsSideOpen] = useState(false)
 
     return (
-        <div className='bg-white py-4 pt-6 flex justify-center items-baseline border-b border-slate-200'>
+        <header className='bg-white py-4 pt-6 flex justify-center items-baseline border-b border-slate-200'>
             <div className='w-full flex items-center justify-between md:justify-around mx-5 md:mx-0'>
-                <h1 className='font-semibold tracking-tight text-2xl'><span className='text-[#DB4444]'>X</span>clusive.</h1>
+                <Link to="/">
+                    <h1 className='font-semibold tracking-tight text-2xl'><span className='text-[#DB4444]'>X</span>clusive.</h1>
+                </Link>
                 <div className='md:hidden'>
                     <div className='flex items-center gap-4'>
                         <div className='cursor-pointer bg-primaryRed rounded-full p-1'>
@@ -44,22 +47,38 @@ const Header = () => {
                     </div>
                 </div>
                 {/* mobile sidebar */}
-                {isSideOpen && (
-                    <div className='fixed inset-0 bg-black bg-opacity-50 z-50 flex justify-end'>
-                        <div className='bg-white w-2/3 max-w-xs h-full p-6'>
-                            <div className='flex justify-end'>
-                                <X onClick={() => setIsSideOpen(false)} className="cursor-pointer" />
-                            </div>
-                            <ul className='list-none flex flex-col gap-4 mt-4'>
-                                {navLinks.map((link) => (
-                                    <li key={link.href} className='font-medium text-[#7D8184] hover:text-black transition text-[18px]'>
-                                        <Link to={link.href} onClick={() => setIsSideOpen(false)}>{link.link}</Link>
-                                    </li>
-                                ))}
-                            </ul>
-                        </div>
-                    </div>
-                )}
+                <AnimatePresence>
+                    {isSideOpen && (
+                        <>
+                            <motion.div
+                                className='fixed inset-0 bg-black bg-opacity-50 z-50'
+                                initial={{ opacity: 0 }}
+                                animate={{ opacity: 1 }}
+                                exit={{ opacity: 0 }}
+                                transition={{ duration: 0.3 }}
+                                onClick={() => setIsSideOpen(false)}
+                            />
+                            <motion.div
+                                className='fixed right-0 top-0 bg-white w-2/3 max-w-xs h-full p-6 z-50'
+                                initial={{ x: '100%' }}
+                                animate={{ x: 0 }}
+                                exit={{ x: '100%' }}
+                                transition={{ type: 'tween', stiffness: 300, damping: 30, duration: 0.3 }}
+                            >
+                                <div className='flex justify-end'>
+                                    <X onClick={() => setIsSideOpen(false)} className="cursor-pointer" />
+                                </div>
+                                <ul className='list-none flex flex-col gap-4 mt-4'>
+                                    {navLinks.map((link) => (
+                                        <li key={link.href} className='font-medium text-[#7D8184] hover:text-black transition text-[18px]'>
+                                            <Link to={link.href} onClick={() => setIsSideOpen(false)}>{link.link}</Link>
+                                        </li>
+                                    ))}
+                                </ul>
+                            </motion.div>
+                        </>
+                    )}
+                </AnimatePresence>
                 <div className='hidden md:flex items-center gap-10'>
                     <div>
                         <ul className='list-none flex items-center gap-8'>
@@ -111,7 +130,7 @@ const Header = () => {
                     </div>
                 </div>
             </div>
-        </div>
+        </header>
     )
 }
 
