@@ -20,6 +20,8 @@ import facebook from './icons/Icon-Facebook.svg';
 import twitter from './icons/Icon-Twitter.svg';
 import linkedin from './icons/Icon-Linkedin.svg';
 import instagram from './icons/icon-instagram.svg';
+import shirt from './icons/Shirt.svg';
+import view from './icons/view.svg';
 
 export const icons = {
     search,
@@ -43,5 +45,7 @@ export const icons = {
     facebook,
     twitter,
     instagram,
-    linkedin
+    linkedin,
+    shirt,
+    view
 };

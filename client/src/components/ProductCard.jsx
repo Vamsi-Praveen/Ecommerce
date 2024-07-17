@@ -2,25 +2,35 @@ import React, { useState } from 'react'
 import Bag from "@/assets/images/bag.png"
 import { Button } from './ui/button'
 import { icons } from '@/assets'
+import { Link, useNavigate } from 'react-router-dom'
 
-const ProductCard = () => {
-    const [rating] = useState(4)
+const ProductCard = ({ title, rating, image, price, slug }) => {
+
+    const navigate = useNavigate()
+
+    const handleCartAdd = async (e) => {
+        alert('Cart Item added  ')
+    }
+
     return (
-        <div className='bg-[#F5F5F5] w-[250px] rounded-[2px] cursor-pointer'>
+        <div className='bg-[#F5F5F5] w-[250px] rounded-[2px] cursor-pointer border border-slate-100'>
             <div className='relative group'>
-                <div className='flex items-center justify-center relative'>
-                    <img src={Bag} className='group-hover:scale-110 transition-all' />
+                <div className='flex items-center justify-center relative overflow-clip w-full h-[250px]'>
+                    <img src={image} className='w-full h-full object-cover group-hover:scale-110 transition-all' />
                     <div className='absolute bg-white rounded-full p-1 cursor-pointer right-3 top-3 z-10'>
                         <img alt='wishlist' src={icons.favorite} />
                     </div>
+                    <div className='absolute bg-white rounded-full p-1 cursor-pointer right-3 top-[50px] z-10' onClick={() => navigate(`product/${slug}`)}>
+                        <img alt='view' src={icons.view} />
+                    </div>
                 </div>
                 <div className='absolute bottom-0 right-0 w-full opacity-0 transition-opacity duration-300 group-hover:opacity-100'>
-                    <Button className="rounded-none w-full">Add to cart</Button>
+                    <Button className="rounded-none w-full" onClick={handleCartAdd}>Add to cart</Button>
                 </div>
             </div>
             <div className='flex flex-col p-3 bg-white'>
-                <h2 className='font-medium text-sm'>GP11 Shooter USB Gamepad</h2>
-                <div className='flex items-center gap-2'><span className='text-primaryRed font-semibold mt-1 text-sm'>$660</span>
+                <h2 className='font-medium text-sm line-clamp-2'>{title}</h2>
+                <div className='flex items-center gap-2'><span className='text-primaryRed font-semibold mt-1 text-sm'>₹{price}</span>
                     <div className='flex'>
                         {Array(5).fill(false).map((_, i) => {
                             return <svg width="18" height="18" viewBox="0 0 24 24" fill={`${rating > i ? '#FFAD33' : '#F5F5F5'}`} xmlns="http://www.w3.org/2000/svg">
