@@ -19,7 +19,7 @@ const Home = () => {
     return (
         <div>
             <Categories />
-            <div className='mt-4 flex gap-4'>
+            <div className='mt-4 flex gap-4 flex-wrap items-center'>
                 {
                     products?.map((product) => {
                         return <div key={product?.id}>

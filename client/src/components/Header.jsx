@@ -1,8 +1,9 @@
 import { icons } from '@/assets'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import { MenuIcon, X } from "lucide-react"
 import { useState } from 'react'
 import { AnimatePresence, motion } from "framer-motion"
+import useCart from '@/hooks/useCart'
 
 const Header = () => {
     const navLinks = [
@@ -23,8 +24,34 @@ const Header = () => {
             link: 'Sign In'
         }
     ]
+    const navMobileLinks = [
+        {
+            href: '/',
+            link: 'Home'
+        },
+        {
+            href: '/products',
+            link: 'Products'
+        },
+        {
+            href: '/me/cart',
+            link: 'Cart'
+        },
+        {
+            href: '/about',
+            link: 'About'
+        },
+        {
+            href: '/auth/login',
+            link: 'Sign In'
+        }
+    ]
 
     const [isSideOpen, setIsSideOpen] = useState(false)
+
+    const { cartItems } = useCart()
+
+    const navigate = useNavigate()
 
     return (
         <header className='bg-white py-4 pt-6 flex justify-center items-baseline border-b border-slate-200'>
@@ -69,7 +96,7 @@ const Header = () => {
                                     <X onClick={() => setIsSideOpen(false)} className="cursor-pointer" />
                                 </div>
                                 <ul className='list-none flex flex-col gap-4 mt-4'>
-                                    {navLinks.map((link) => (
+                                    {navMobileLinks.map((link) => (
                                         <li key={link.href} className='font-medium text-[#7D8184] hover:text-black transition text-[18px]'>
                                             <Link to={link.href} onClick={() => setIsSideOpen(false)}>{link.link}</Link>
                                         </li>
@@ -102,7 +129,7 @@ const Header = () => {
                                     <path d="M8 5C5.7912 5 4 6.73964 4 8.88594C4 10.6185 4.7 14.7305 11.5904 18.8873C11.7138 18.961 11.8555 19 12 19C12.1445 19 12.2862 18.961 12.4096 18.8873C19.3 14.7305 20 10.6185 20 8.88594C20 6.73964 18.2088 5 16 5C13.7912 5 12 7.35511 12 7.35511C12 7.35511 10.2088 5 8 5Z" stroke="black" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
                                 </svg>
                             </div>
-                            <div className='cursor-pointer'>
+                            <div className='cursor-pointer' onClick={() => navigate('/me/cart')}>
                                 <div className='relative'>
 
                                     <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -113,7 +140,7 @@ const Header = () => {
                                     </svg>
 
 
-                                    <span className='absolute -top-1 -right-1 inline-flex items-center justify-center bg-primaryRed rounded-full text-white text-[10px] w-4 h-4 font-medium '>2</span>
+                                    <span className='absolute -top-1 -right-1 inline-flex items-center justify-center bg-primaryRed rounded-full text-white text-[10px] w-4 h-4 font-medium '>{cartItems}</span>
                                 </div>
 
 

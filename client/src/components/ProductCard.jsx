@@ -1,19 +1,19 @@
-import React, { useState } from 'react'
-import Bag from "@/assets/images/bag.png"
-import { Button } from './ui/button'
 import { icons } from '@/assets'
-import { Link, useNavigate } from 'react-router-dom'
+import useCart from '@/hooks/useCart'
+import { useNavigate } from 'react-router-dom'
+import { Button } from './ui/button'
 
 const ProductCard = ({ title, rating, image, price, slug }) => {
 
     const navigate = useNavigate()
-
-    const handleCartAdd = async (e) => {
-        alert('Cart Item added  ')
+    const { setCart, setCartItems } = useCart()
+    const handleCartAdd = async () => {
+        setCartItems(prev => prev + 1);
+        setCart(prev => [...prev, slug])
     }
 
     return (
-        <div className='bg-[#F5F5F5] w-[250px] rounded-[2px] cursor-pointer border border-slate-100'>
+        <div className='bg-[#F5F5F5] w-[220px] md:w-[250px] rounded-[2px] cursor-pointer border border-slate-100'>
             <div className='relative group'>
                 <div className='flex items-center justify-center relative overflow-clip w-full h-[250px]'>
                     <img src={image} className='w-full h-full object-cover group-hover:scale-110 transition-all' />
@@ -30,7 +30,8 @@ const ProductCard = ({ title, rating, image, price, slug }) => {
             </div>
             <div className='flex flex-col p-3 bg-white'>
                 <h2 className='font-medium text-sm line-clamp-2'>{title}</h2>
-                <div className='flex items-center gap-2'><span className='text-primaryRed font-semibold mt-1 text-sm'>₹{price}</span>
+                <div className='flex items-center gap-2'>
+                    <span className='text-primaryRed font-semibold mt-1 text-sm'>₹{price}</span>
                     <div className='flex'>
                         {Array(5).fill(false).map((_, i) => {
                             return <svg key={i} width="18" height="18" viewBox="0 0 24 24" fill={`${rating > i ? '#FFAD33' : '#F5F5F5'}`} xmlns="http://www.w3.org/2000/svg">
