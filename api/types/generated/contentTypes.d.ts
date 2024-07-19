@@ -800,11 +800,12 @@ export interface ApiCartCart extends Schema.CollectionType {
     draftAndPublish: true;
   };
   attributes: {
-    products: Attribute.Relation<
+    user: Attribute.Relation<
       'api::cart.cart',
-      'oneToMany',
-      'api::product.product'
+      'manyToOne',
+      'plugin::users-permissions.user'
     >;
+    items: Attribute.JSON & Attribute.Required;
     createdAt: Attribute.DateTime;
     updatedAt: Attribute.DateTime;
     publishedAt: Attribute.DateTime;
@@ -935,11 +936,6 @@ export interface ApiProductProduct extends Schema.CollectionType {
       'api::sub-category.sub-category'
     >;
     slug: Attribute.UID<'api::product.product', 'title'>;
-    cart: Attribute.Relation<
-      'api::product.product',
-      'manyToOne',
-      'api::cart.cart'
-    >;
     createdAt: Attribute.DateTime;
     updatedAt: Attribute.DateTime;
     publishedAt: Attribute.DateTime;

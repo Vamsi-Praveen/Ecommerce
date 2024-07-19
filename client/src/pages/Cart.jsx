@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import {
     Table,
     TableBody,
@@ -8,9 +8,15 @@ import {
     TableHeader,
     TableRow,
 } from "@/components/ui/table"
+import { getCart } from '@/api/API'
+import useAuth from '@/hooks/useAuth'
+import useCart from '@/hooks/useCart'
+import { Input } from '@/components/ui/input'
 
 
 const Cart = () => {
+    const { cartWithProduct: cart } = useCart()
+    console.log(cart)
     return (
         <div>
             <div className='md:x-5 mt-4 space-y-2'>
@@ -25,12 +31,32 @@ const Cart = () => {
                         </TableRow>
                     </TableHeader>
                     <TableBody>
-                        <TableRow>
-                            <TableCell className="font-medium">INV001</TableCell>
-                            <TableCell>Paid</TableCell>
-                            <TableCell>Credit Card</TableCell>
-                            <TableCell className="text-right">$250.00</TableCell>
-                        </TableRow>
+                        {
+                            cart?.map((item) => {
+                                return <TableRow key={item.productId}>
+                                    <TableCell className="font-medium">
+                                        <div className='flex items-center gap-2'>
+                                            <img src={import.meta.env.VITE_IMAGE_PATH + item?.productData?.attributes?.productImages?.data[0]?.attributes?.url} alt="product" className='h-[50px] w-[50px] object-cover' />
+                                            <span className='line-clamp-1'>{item?.productData?.attributes?.title}</span>
+                                        </div>
+                                    </TableCell>
+                                    <TableCell>
+                                        ₹{item?.productData?.attributes?.price}
+                                    </TableCell>
+                                    <TableCell>
+                                        <Input
+                                            type="number"
+                                            value={item?.quantity}
+                                            onChange={(e) => handleQuantityChange(item.id, Number(e.target.value))}
+                                            className="w-2/3 outline-none focus-visible:ring-0"
+                                        />
+                                    </TableCell>
+                                    <TableCell className="text-right">
+                                        ₹{calculateSubtotal(item?.attributes?.price, quantities[item.id])}
+                                    </TableCell>
+                                </TableRow>
+                            })
+                        }
                     </TableBody>
                 </Table>
             </div>

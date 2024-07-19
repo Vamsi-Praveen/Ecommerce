@@ -12,11 +12,14 @@
   },
   "pluginOptions": {},
   "attributes": {
-    "products": {
+    "user": {
       "type": "relation",
-      "relation": "oneToMany",
-      "target": "api::product.product",
-      "mappedBy": "cart"
+      "relation": "manyToOne",
+      "target": "plugin::users-permissions.user"
+    },
+    "items": {
+      "type": "json",
+      "required": true
     }
   }
 }

@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import HeaderBanner from './components/HeaderBanner'
 import Header from './components/Header'
 import Footer from './components/Footer'
@@ -12,23 +12,32 @@ import CartProvider from './context/CartContext'
 import WishlistProvider from './context/WishlistContext'
 import Cart from './pages/Cart'
 import Profile from './pages/Profile'
+import Login from './pages/Login'
+import Register from './pages/Register'
+import ProtectWrapper from './components/auth/ProtectWrapper'
 
 const App = () => {
+  const [isBannerOpen, setIsBannerOpen] = useState(true)
   return (
     <div className='antialiased h-screen w-full flex flex-col'>
       <AuthProvider>
         <CartProvider>
           <WishlistProvider>
-            <HeaderBanner />
+            {isBannerOpen && <HeaderBanner toggle={setIsBannerOpen} />}
             <Header />
             <div className='flex-1'>
               <PaddingWrapper>
                 <Routes>
-                  <Route path="/" element={<Home />} />
+                  <Route path='/auth/login' element={<Login />} />
+                  <Route path='/auth/register' element={<Register />} />
+                  <Route path="/" index element={<Home />} />
                   <Route path="/product/:slug" element={<ProductDetails />} />
-                  <Route path="/me/cart" element={<Cart />} />
-                  <Route path="/me" element={<Profile />} />
+                  <Route element={<ProtectWrapper />}>
+                    <Route path="/me/cart" element={<Cart />} />
+                    <Route path="/me" element={<Profile />} />
+                  </Route>
                   <Route path="*" element={<Error404 />} />
+
                 </Routes>
               </PaddingWrapper>
             </div>
