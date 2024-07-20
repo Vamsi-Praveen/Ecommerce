@@ -26,9 +26,14 @@ const CartProvider = ({ children }) => {
                     productData: products[index],
                 }));
 
+                const cartData = {
+                    cartId: userCart?.id,
+                    items: cartWithProductData,
+                }
+
                 setCart(userCart?.attributes?.products?.data || []);
-                setCartItems(userCart?.attributes?.products?.data?.length || 0);
-                setCartWithProduct(cartWithProductData);
+                setCartItems(userCart?.attributes?.items?.length || 0);
+                setCartWithProduct(cartData);
             } catch (error) {
                 console.error('Error fetching cart:', error);
             }

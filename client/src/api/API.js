@@ -1,4 +1,4 @@
-import axios from "axios"
+import axios from "axios";
 
 const baseURL = import.meta.env.VITE_BASE_URL;
 
@@ -32,4 +32,9 @@ export const loginUser = async ({ email, password }) => {
         password: password
     })
     return response?.data
+}
+
+export const validCoupon = async (coupon) => {
+    const response = await API.get(`/coupons?filters[code][$eq]=${coupon}&filters[isActive][$eq]=true`)
+    return response?.data?.data[0]
 }
