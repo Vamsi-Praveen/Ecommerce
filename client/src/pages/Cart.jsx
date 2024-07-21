@@ -11,10 +11,13 @@ import {
 } from "@/components/ui/table";
 import useCart from '@/hooks/useCart';
 import { useEffect, useState } from 'react';
+import { Helmet } from 'react-helmet';
 
 const Cart = () => {
-    const { cartWithProduct: initialCart } = useCart();
-    console.log(initialCart)
+    const { cartWithProduct: initialCart, fetchCart } = useCart();
+    useEffect(() => {
+        fetchCart()
+    }, [])
     const [cart, setCart] = useState([]);
     const [coupon, setCoupon] = useState('')
     const [isCouponValid, setIsValidCoupon] = useState(false)
@@ -71,48 +74,57 @@ const Cart = () => {
 
     return (
         <div>
+            <Helmet>
+                <title>Cart | Xclusive</title>
+            </Helmet>
             <div className='md:mx-5 mt-4 space-y-2'>
                 <span className='font-medium ml-2 text-xl'>Cart</span>
-                <Table>
-                    <TableHeader>
-                        <TableRow>
-                            <TableHead>Product</TableHead>
-                            <TableHead>Price</TableHead>
-                            <TableHead>Quantity</TableHead>
-                            <TableHead className="text-right">Sub Total</TableHead>
-                        </TableRow>
-                    </TableHeader>
-                    <TableBody>
-                        {cart?.items?.map((item) => (
-                            <TableRow key={item.productId}>
-                                <TableCell className="font-medium w-[65%]">
-                                    <div className='flex items-center gap-2'>
-                                        <img
-                                            src={`${import.meta.env.VITE_IMAGE_PATH}${item?.productData?.attributes?.productImages?.data[0]?.attributes?.url}`}
-                                            alt="product"
-                                            className='h-[50px] w-[50px] object-cover'
-                                        />
-                                        <span className='line-clamp-1'>{item?.productData?.attributes?.title}</span>
-                                    </div>
-                                </TableCell>
-                                <TableCell>
-                                    ₹{item?.productData?.attributes?.price}
-                                </TableCell>
-                                <TableCell>
-                                    <Input
-                                        type="number"
-                                        value={item?.quantity}
-                                        onChange={(e) => handleQuantityChange(item.productId, Number(e.target.value))}
-                                        className="w-2/3 outline-none focus-visible:ring-0"
-                                    />
-                                </TableCell>
-                                <TableCell className="text-right">
-                                    ₹{calculateSubtotal(item?.productData?.attributes?.price, item.quantity)}
-                                </TableCell>
+                <div className='relative'>
+                    <Table>
+                        <TableHeader>
+                            <TableRow>
+                                <TableHead>Product</TableHead>
+                                <TableHead>Price</TableHead>
+                                <TableHead>Quantity</TableHead>
+                                <TableHead className="text-right">Sub Total</TableHead>
                             </TableRow>
-                        ))}
-                    </TableBody>
-                </Table>
+                        </TableHeader>
+                    </Table>
+                    <div className='h-[450px] overflow-y-scroll'>
+                        <Table>
+                            <TableBody>
+                                {cart?.items?.map((item) => (
+                                    <TableRow key={item.productId}>
+                                        <TableCell className="font-medium w-[65%]">
+                                            <div className='flex items-center gap-2'>
+                                                <img
+                                                    src={`${import.meta.env.VITE_IMAGE_PATH}${item?.productData?.attributes?.productImages?.data[0]?.attributes?.url}`}
+                                                    alt="product"
+                                                    className='h-[50px] w-[50px] object-cover'
+                                                />
+                                                <span className='line-clamp-1'>{item?.productData?.attributes?.title}</span>
+                                            </div>
+                                        </TableCell>
+                                        <TableCell>
+                                            ₹{item?.productData?.attributes?.price}
+                                        </TableCell>
+                                        <TableCell>
+                                            <Input
+                                                type="number"
+                                                value={item?.quantity}
+                                                onChange={(e) => handleQuantityChange(item.productId, Number(e.target.value))}
+                                                className="w-2/3 outline-none focus-visible:ring-0"
+                                            />
+                                        </TableCell>
+                                        <TableCell className="text-right">
+                                            ₹{calculateSubtotal(item?.productData?.attributes?.price, item.quantity)}
+                                        </TableCell>
+                                    </TableRow>
+                                ))}
+                            </TableBody>
+                        </Table>
+                    </div>
+                </div>
                 <div className='py-10 flex justify-between md:flex-row flex-col gap-3 md:gap-0'>
                     <div className='flex gap-2'>
                         <Input type="text" placeholder="Coupon Code" className="focus-visible:ring-0" onChange={(e) => { setCoupon(e.target.value) }} />

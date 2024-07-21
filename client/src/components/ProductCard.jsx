@@ -2,14 +2,16 @@ import { icons } from '@/assets'
 import useCart from '@/hooks/useCart'
 import { useNavigate } from 'react-router-dom'
 import { Button } from './ui/button'
+import { addToCart } from '@/api/API'
 
-const ProductCard = ({ title, rating, image, price, slug }) => {
+const ProductCard = ({ title, rating, image, price, slug,id }) => {
 
     const navigate = useNavigate()
     const { setCart, setCartItems } = useCart()
     const handleCartAdd = async () => {
         setCartItems(prev => prev + 1);
         setCart(prev => [...prev, slug])
+        await addToCart(id,1)
     }
 
     return (
